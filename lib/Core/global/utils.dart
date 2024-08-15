@@ -7,6 +7,7 @@ import 'global_variables.dart';
 Widget textField(
    TextEditingController controller,
    String hintText,
+    int length,
 {
   bool text = true
 }
@@ -19,7 +20,7 @@ Widget textField(
       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
       FilteringTextInputFormatter.digitsOnly
     ],
-    maxLength: text ? 99 : 10,
+    maxLength: length,
     decoration: InputDecoration(
       counterText: '',
       hintText: hintText,

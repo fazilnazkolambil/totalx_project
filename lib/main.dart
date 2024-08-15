@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:totalx_project/Features/authPage/screens/otp_page.dart';
 import 'package:totalx_project/Features/authPage/screens/sign_in_page.dart';
+import 'package:totalx_project/Features/userPage/screens/user_list_page.dart';
 import 'Core/global/global_variables.dart';
 import 'firebase_options.dart';
 
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const SignInPage(),
+        home: const UserListPage(),
       ),
     );
   }

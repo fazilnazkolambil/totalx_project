@@ -3,6 +3,7 @@ import 'dart:ui';
 class ImageConst{
   static const signInImage = 'assets/images/signInImage.png';
   static const otpImage = 'assets/images/otpImage.png';
+  static const userIcon = 'assets/images/userIcon.png';
 }
 
 class ColorConst{

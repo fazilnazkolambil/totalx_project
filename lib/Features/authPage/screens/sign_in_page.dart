@@ -38,7 +38,7 @@ class _SignInPageState extends State<SignInPage> {
                   fontSize: w * 0.04,
                   fontWeight: FontWeight.w600
                 )),
-                textField(phoneNumberController, 'Enter Phone Number *',text: false),
+                textField(phoneNumberController, 'Enter Phone Number *',10,text: false),
                 RichText(text: TextSpan(
                   style: TextStyle(
                       color: ColorConst.textColor.withOpacity(0.5),
