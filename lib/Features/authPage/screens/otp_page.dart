@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:totalx_project/Features/userPage/screens/user_list_page.dart';
 
 import '../../../Core/constants/const_page.dart';
 import '../../../Core/global/global_variables.dart';
@@ -19,7 +20,7 @@ class _OtpPageState extends State<OtpPage> {
   int _seconds = 59;
   bool end = false;
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (_seconds > 0) {
           _seconds--;
@@ -60,7 +61,7 @@ class _OtpPageState extends State<OtpPage> {
                     fontSize: w * 0.04,
                     fontWeight: FontWeight.w600
                 )),
-                Text('Enter the verification code we just sent to your number +91*******21',style: TextStyle(
+                Text('Enter the verification code we just sent to your number +91*******${userNumber.substring(7,9)}',style: TextStyle(
                   fontSize: w * 0.035,
                   color: ColorConst.textColor,
                   fontWeight: FontWeight.w400
@@ -124,20 +125,25 @@ class _OtpPageState extends State<OtpPage> {
                     )
                   ],
                 ),
-                Container(
-                    height: w * 0.12,
-                    width: w * 0.9,
-                    decoration: BoxDecoration(
-                      color: ColorConst.secondaryColor,
-                      borderRadius:
-                      BorderRadius.circular(w * 0.07),
-                    ),
-                    child: Center(
-                        child: Text("Verify",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: w * 0.04))))
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const UserListPage()));
+                  },
+                  child: Container(
+                      height: w * 0.12,
+                      width: w * 0.9,
+                      decoration: BoxDecoration(
+                        color: ColorConst.secondaryColor,
+                        borderRadius:
+                        BorderRadius.circular(w * 0.07),
+                      ),
+                      child: Center(
+                          child: Text("Verify",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: w * 0.04)))),
+                )
               ],
             ),
           ),

@@ -4,8 +4,6 @@ class UserModel{
   int? age;
   String? number;
   String? image;
-  DateTime? createdTime;
-  String? id;
   DocumentReference? reference;
   List? search;
 
@@ -14,8 +12,6 @@ class UserModel{
     required this.age,
     required this.number,
     required this.image,
-    required this.createdTime,
-    required this.id,
     required this.reference,
     required this.search
 });
@@ -24,8 +20,6 @@ class UserModel{
     int? age,
     String? number,
     String? image,
-    DateTime? createdTime,
-    String? id,
     DocumentReference? reference,
     List? search,
 }){
@@ -34,8 +28,6 @@ class UserModel{
         age: age ?? this.age,
         number: number ?? this.number,
         image: image ?? this.image,
-        createdTime: createdTime ?? this.createdTime,
-        id: id ?? this.id,
         reference: reference ?? this.reference,
         search: search ?? this.search
     );
@@ -45,8 +37,6 @@ class UserModel{
       age: map['age'],
       number: map['number'],
       image: map['image'],
-      createdTime: map['createdTime'],
-      id: map['id'],
       reference: map['reference'],
       search: map['search']
   );
@@ -55,8 +45,6 @@ Map <String, dynamic> toMap()=>{
   'age' : age,
   'number' : number,
   'image' : image,
-  'createdTime' : createdTime,
-  'id' : id,
   'reference' : reference,
   'search' : search
 };

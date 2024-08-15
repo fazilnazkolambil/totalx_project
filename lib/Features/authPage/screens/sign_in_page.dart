@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:totalx_project/Core/constants/const_page.dart';
 import 'package:totalx_project/Core/global/utils.dart';
+import 'package:totalx_project/Features/authPage/screens/otp_page.dart';
 
 import '../../../Core/global/global_variables.dart';
 
@@ -67,20 +68,30 @@ class _SignInPageState extends State<SignInPage> {
                     )
                   ]
                 )),
-                Container(
-                    height: w * 0.12,
-                    width: w * 0.9,
-                    decoration: BoxDecoration(
-                      color: ColorConst.secondaryColor,
-                      borderRadius:
-                      BorderRadius.circular(w * 0.07),
-                    ),
-                    child: Center(
-                        child: Text("Get OTP",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: w * 0.04))))
+                InkWell(
+                  onTap: () {
+                    if(phoneNumberController.text.isNotEmpty && phoneNumberController.text.length == 10){
+                      userNumber = phoneNumberController.text;
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const OtpPage()));
+                    }else{
+                      showErrorToast(context, 'Please enter a valid phone number');
+                    }
+                  },
+                  child: Container(
+                      height: w * 0.12,
+                      width: w * 0.9,
+                      decoration: BoxDecoration(
+                        color: ColorConst.secondaryColor,
+                        borderRadius:
+                        BorderRadius.circular(w * 0.07),
+                      ),
+                      child: Center(
+                          child: Text("Get OTP",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: w * 0.04)))),
+                )
               ],
             ),
           ),
