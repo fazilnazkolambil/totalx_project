@@ -61,7 +61,7 @@ class _OtpPageState extends State<OtpPage> {
                     fontSize: w * 0.04,
                     fontWeight: FontWeight.w600
                 )),
-                Text('Enter the verification code we just sent to your number +91*******${userNumber.substring(7,9)}',style: TextStyle(
+                Text('Enter the verification code we just sent to your number +91*******${userNumber.substring(8,10)}',style: TextStyle(
                   fontSize: w * 0.035,
                   color: ColorConst.textColor,
                   fontWeight: FontWeight.w400

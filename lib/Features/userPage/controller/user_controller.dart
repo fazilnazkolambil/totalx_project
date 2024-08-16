@@ -28,10 +28,12 @@ class UserController extends Notifier <bool> {
     required UserModel data,
     required BuildContext context
 }){
-    var res =  ref.watch(userRepositoryProvider).createUser(reference: reference, data: data);
-    res.fold(
-        (l) => showErrorToast(context, l.message),
-        (r) => showSuccessToast(context,'User added successfully')
-    );
+    try{
+      ref.watch(userRepositoryProvider).createUser(reference: reference, data: data);
+      showSuccessToast(context, 'User added Successfully');
+    } catch (e){
+      showErrorToast(context, e.toString());
+    }
+
   }
 }
