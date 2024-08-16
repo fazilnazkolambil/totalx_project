@@ -74,7 +74,7 @@ class _SignInPageState extends State<SignInPage> {
                   onTap: () {
                     if(phoneNumberController.text.isNotEmpty && phoneNumberController.text.length == 10){
                       userNumber = '+91${phoneNumberController.text}';
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const OtpPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => OtpPage()));
 
                     }else{
                       showErrorToast(context, 'Please enter a valid phone number');

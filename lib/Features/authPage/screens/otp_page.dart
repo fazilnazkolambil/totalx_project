@@ -1,23 +1,21 @@
 import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pinput/pinput.dart';
-import 'package:totalx_project/Core/global/utils.dart';
 import 'package:totalx_project/Features/userPage/screens/user_list_page.dart';
-
 import '../../../Core/constants/const_page.dart';
 import '../../../Core/global/global_variables.dart';
+import '../repository/auth_repository.dart';
 
-class OtpPage extends StatefulWidget {
+class OtpPage extends ConsumerStatefulWidget {
   const OtpPage({super.key,
   });
 
   @override
-  State<OtpPage> createState() => _OtpPageState();
+  ConsumerState<OtpPage> createState() => _OtpPageState();
 }
 
-class _OtpPageState extends State<OtpPage> {
+class _OtpPageState extends ConsumerState<OtpPage> {
   final TextEditingController pin_controller = TextEditingController();
   Timer? _timer;
   int _seconds = 59;
@@ -34,54 +32,14 @@ class _OtpPageState extends State<OtpPage> {
       });
     });
   }
-  String? _verificationId;
-  Future <void> _verifyPhoneNumber() async {
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: userNumber,
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await FirebaseAuth.instance.signInWithCredential(credential);
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        print(e.code);
-      },
-      codeSent: (String verificationId, int? resendToken) async {
-        // PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: '329450');
-        // await FirebaseAuth.instance.signInWithCredential(credential);
-        setState(() {
-          print('aaaaaaaaaa$verificationId');
-          _verificationId = verificationId;
-        });
-      },
-      timeout: Duration(seconds: _seconds),
-      codeAutoRetrievalTimeout: (String verificationId) { },
-    );
-  }
-
-  Future<void> _signInWithSmsCode() async {
-    if(pin_controller.text.isEmpty){
-      showErrorToast(context, 'Pin cannot be empty');
-    }else if(pin_controller.text.length != 6){
-      showErrorToast(context, 'Enter a valid pin');
-    }else{
-      print(_verificationId);
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: _verificationId!,
-        smsCode: pin_controller.text,
-      );
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const UserListPage()));
-    }
-  }
-
-
   @override
   void initState() {
-    _verifyPhoneNumber();
     startTimer();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
+    final authNotifier = ref.read(authProvider.notifier);
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -146,7 +104,7 @@ class _OtpPageState extends State<OtpPage> {
                 : Center(child: Text('$_seconds sec',style: TextStyle(
                   fontSize: w * 0.03,
                   fontWeight: FontWeight.w600,
-                  color: Colors.red
+                  color: Colors.red,
                 ))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -157,7 +115,8 @@ class _OtpPageState extends State<OtpPage> {
                     ),),
                     InkWell(
                       onTap: () {
-                        _verifyPhoneNumber();
+                        final smsCode = pin_controller.text.trim();
+                        authNotifier.signInWithSmsCode(smsCode);
                       },
                       child: Text('Resend',style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -171,7 +130,11 @@ class _OtpPageState extends State<OtpPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    _signInWithSmsCode();
+                   // _signInWithSmsCode();
+                    authNotifier.verifyPhoneNumber(userNumber);
+                    final smsCode = pin_controller.text.trim();
+                    authNotifier.signInWithSmsCode(smsCode);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const UserListPage()));
                   },
                   child: Container(
                       height: w * 0.12,
