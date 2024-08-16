@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:totalx_project/Core/constants/const_page.dart';
 import 'package:totalx_project/Core/global/utils.dart';
@@ -71,8 +73,9 @@ class _SignInPageState extends State<SignInPage> {
                 InkWell(
                   onTap: () {
                     if(phoneNumberController.text.isNotEmpty && phoneNumberController.text.length == 10){
-                      userNumber = phoneNumberController.text;
+                      userNumber = '+91${phoneNumberController.text}';
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const OtpPage()));
+
                     }else{
                       showErrorToast(context, 'Please enter a valid phone number');
                     }

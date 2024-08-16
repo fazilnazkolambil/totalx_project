@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:totalx_project/Core/global/global_variables.dart';
 import 'package:totalx_project/Models/user_model.dart';
 
+int loadingLimit = 3;
 final userRepositoryProvider = Provider((ref) => UserRepository(firestore: ref.watch(firestoreProvider)));
 class UserRepository{
   final FirebaseFirestore _firestore;

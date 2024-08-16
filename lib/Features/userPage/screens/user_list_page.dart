@@ -32,6 +32,7 @@ class _UserListPageState extends ConsumerState<UserListPage> {
   List sortItems = ['All', 'Age : Elder', 'Age : Younger'];
   List <UserModel> filteredItems = [];
 
+
   pickFile(ImageSource) async {
     final imageFile = await ImagePicker().pickImage(source: ImageSource);
     file = File(imageFile!.path);
@@ -328,8 +329,8 @@ class _UserListPageState extends ConsumerState<UserListPage> {
                       : radio == 2
                   ? filteredItems.addAll(data.where((element) => element.age! < 60))
                       : filteredItems.addAll(data);
-                  return data.isEmpty?
-                  const Center(child: Text("No Users added"))
+                  return filteredItems.isEmpty?
+                  const Center(child: Text("No added Users"))
                       : ListView.separated(
                       itemCount: filteredItems.length,
                       itemBuilder: (context, index) {

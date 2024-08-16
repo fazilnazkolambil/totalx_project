@@ -1,14 +1,17 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:totalx_project/Core/global/utils.dart';
 import 'package:totalx_project/Features/userPage/screens/user_list_page.dart';
 
 import '../../../Core/constants/const_page.dart';
 import '../../../Core/global/global_variables.dart';
 
 class OtpPage extends StatefulWidget {
-  const OtpPage({super.key});
+  const OtpPage({super.key,
+  });
 
   @override
   State<OtpPage> createState() => _OtpPageState();
@@ -31,8 +34,49 @@ class _OtpPageState extends State<OtpPage> {
       });
     });
   }
+  String? _verificationId;
+  Future <void> _verifyPhoneNumber() async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: userNumber,
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await FirebaseAuth.instance.signInWithCredential(credential);
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print(e.code);
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        // PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: '329450');
+        // await FirebaseAuth.instance.signInWithCredential(credential);
+        setState(() {
+          print('aaaaaaaaaa$verificationId');
+          _verificationId = verificationId;
+        });
+      },
+      timeout: Duration(seconds: _seconds),
+      codeAutoRetrievalTimeout: (String verificationId) { },
+    );
+  }
+
+  Future<void> _signInWithSmsCode() async {
+    if(pin_controller.text.isEmpty){
+      showErrorToast(context, 'Pin cannot be empty');
+    }else if(pin_controller.text.length != 6){
+      showErrorToast(context, 'Enter a valid pin');
+    }else{
+      print(_verificationId);
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: _verificationId!,
+        smsCode: pin_controller.text,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const UserListPage()));
+    }
+  }
+
+
   @override
   void initState() {
+    _verifyPhoneNumber();
     startTimer();
     super.initState();
   }
@@ -61,7 +105,7 @@ class _OtpPageState extends State<OtpPage> {
                     fontSize: w * 0.04,
                     fontWeight: FontWeight.w600
                 )),
-                Text('Enter the verification code we just sent to your number +91*******${userNumber.substring(8,10)}',style: TextStyle(
+                Text('Enter the verification code we just sent to your number +91*******${userNumber.substring(11,13)}',style: TextStyle(
                   fontSize: w * 0.035,
                   color: ColorConst.textColor,
                   fontWeight: FontWeight.w400
@@ -113,7 +157,7 @@ class _OtpPageState extends State<OtpPage> {
                     ),),
                     InkWell(
                       onTap: () {
-
+                        _verifyPhoneNumber();
                       },
                       child: Text('Resend',style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -127,7 +171,7 @@ class _OtpPageState extends State<OtpPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const UserListPage()));
+                    _signInWithSmsCode();
                   },
                   child: Container(
                       height: w * 0.12,
